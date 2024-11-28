@@ -1,0 +1,57 @@
+{
+  "connector.class": "io.streamthoughts.kafka.connect.filepulse.source.FilePulseSourceConnector",
+  "tasks.max": 1,
+
+  "topic": "local.dkt-member.streaming.public.demo-filepulse.member-event.v1.avro",
+
+  "file.encoding": "UTF-8",
+  "skip.headers": "1",
+
+  "filters": "ParseCSVLine",
+  "filters.ParseCSVLine.type": "io.streamthoughts.kafka.connect.filepulse.filter.CSVFilter",
+  "filters.ParseCSVLine.separator": ",",
+  "filters.ParseCSVLine.trim.column": "true",
+  "filters.ParseCSVLine.columns": "memberId:string;memberName:string;memberData:string",
+
+  "transforms": "CloudEvents,AddNamespace,SetRecordSchemaValue",
+
+  "transforms.CloudEvents.type": "com.decathlon.kafka.connect.transforms.cloudevents.CloudEventsBinaryContentMode",
+  "transforms.CloudEvents.cloudevents.attribute.id.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.UUIDStrategy",
+  "transforms.CloudEvents.cloudevents.attribute.source.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.StaticValueStrategy",
+  "transforms.CloudEvents.cloudevents.attribute.source.strategy.value": "xxx",
+  "transforms.CloudEvents.cloudevents.attribute.subject.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.StaticValueStrategy",
+  "transforms.CloudEvents.cloudevents.attribute.subject.strategy.value": "xxx",
+  "transforms.CloudEvents.cloudevents.attribute.type.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.StaticValueStrategy",
+  "transforms.CloudEvents.cloudevents.attribute.type.strategy.value": "xxx",
+  "transforms.CloudEvents.cloudevents.attribute.content-type.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.StaticValueStrategy",
+  "transforms.CloudEvents.cloudevents.attribute.content-type.strategy.value": "application/avro",
+  "transforms.CloudEvents.cloudevents.attribute.time.strategy.type": "com.decathlon.streaming.kafka.cloudevents.strategy.HeaderStrategy",
+
+  "transforms.AddNamespace.type": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Value",
+  "transforms.AddNamespace.schema.name": "com.decathlon.member.streaming.domain.avro.v1.MemberEvent",
+
+  "transforms.SetRecordSchemaValue.type": "com.decathlon.kafka.connect.transforms.avro.SetRecordSchemaValue",
+  "transforms.SetRecordSchemaValue.schema.registry.url": "http://schema-registry:8081",
+  "transforms.SetRecordSchemaValue.subject.schema.values": "default",
+  "transforms.SetRecordSchemaValue.subject.default.name": "local.dkt-member.streaming.public.demo-filepulse.member-event.v1.avro-value",
+
+  "fs.cleanup.policy.class": "io.streamthoughts.kafka.connect.filepulse.fs.clean.LogCleanupPolicy",
+  "fs.listing.class": "io.streamthoughts.kafka.connect.filepulse.fs.LocalFSDirectoryListing",
+  "fs.listing.directory.path":"/data",
+  "fs.listing.filters":"io.streamthoughts.kafka.connect.filepulse.fs.filter.RegexFileListFilter",
+  "fs.listing.interval.ms": "10000",
+  "file.filter.regex.pattern":"data.*\\.csv$",
+
+  "tasks.reader.class": "io.streamthoughts.kafka.connect.filepulse.fs.reader.LocalRowFileInputReader",
+  "tasks.file.status.storage.topic": "connect.dkt-member.streaming.file-pulse-status.demo",
+  "tasks.file.status.storage.bootstrap.servers": "kafka:29092",
+
+  "key.converter": "com.decathlon.kafka.crypto.serdes.KafkaHashedKeyConverter",
+
+  "value.converter": "com.decathlon.kafka.crypto.serdes.KafkaCryptoConverter",
+  "value.converter.crypto.serdes.delegate.converter": "io.confluent.connect.avro.AvroConverter",
+  "value.converter.crypto.serdes.tink.keyset.json.string": "##TINK_KEYSET_JSON##",
+  "value.converter.schema.registry.url": "http://schema-registry:8081",
+  "value.converter.auto.register.schemas": false,
+  "value.converter.use.latest.version": true
+}

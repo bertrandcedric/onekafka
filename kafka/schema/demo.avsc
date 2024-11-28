@@ -1,0 +1,38 @@
+{
+  "namespace": "org.demo",
+  "type": "record",
+  "name": "Event",
+  "doc": "A dummy event",
+  "fields": [
+    {
+      "name": "id",
+      "default": null,
+      "type": [
+        "null",
+        {
+          "type": "string",
+          "logicalType": "uuid"
+        }
+      ],
+      "doc": "Unique identifier of a user"
+    },
+    {
+      "name": "name",
+      "default": null,
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "Name of a user"
+    },
+    {
+      "name": "data",
+      "default": null,
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "Data of a user"
+    }
+  ]
+}
