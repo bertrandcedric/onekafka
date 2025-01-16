@@ -40,4 +40,9 @@ $ docker run --network kafka_kafka-platform \
       --topic sample.v1.avro \
       --group demo \
       --from-beginning
+
+$ docker run -it --network kafka_kafka-platform \                                                                                                                                                                                             at 16:59:28
+--rm apache/kafka:latest /opt/kafka/bin/kafka-producer-perf-test.sh \
+--producer-props bootstrap.servers=kafka1:29092 \
+--topic sample.v1.avro --num-records 100000000 --throughput 100000000 --record-size 10240
 ```
