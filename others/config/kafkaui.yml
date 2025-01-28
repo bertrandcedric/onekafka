@@ -1,0 +1,12 @@
+kafka:
+  clusters:
+    - name: kafka
+      bootstrapServers: kafka:29092
+      readOnly: true
+      schemaRegistry: http://schema-registry:8081
+      kafkaConnect:
+        - name: connect
+          address: http://connect:8083
+      audit:
+        console-audit-enabled: true
+        level: all # either ALL or ALTER_ONLY (default). ALL will log all read operations.

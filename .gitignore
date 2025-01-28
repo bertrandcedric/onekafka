@@ -9,3 +9,4 @@ terraform.tfvars
 /ansible/tf/002_ecs/ansible/hosts_jumphost.yml
 /ansible/tf/002_ecs/ansible/hosts.yml
 *.pem
+/local/security/ssl/certificates/

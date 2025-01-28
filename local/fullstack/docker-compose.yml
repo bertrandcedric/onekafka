@@ -1,0 +1,304 @@
+---
+services:
+
+  controller1:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: controller1
+    container_name: controller1
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'controller'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT'
+      KAFKA_LISTENERS: 'CONTROLLER://controller1:19093'
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  controller2:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: controller2
+    container_name: controller2
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'controller'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_NODE_ID: 2
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT'
+      KAFKA_LISTENERS: 'CONTROLLER://controller2:19093'
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  controller3:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: controller3
+    container_name: controller3
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'controller'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_NODE_ID: 3
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT'
+      KAFKA_LISTENERS: 'CONTROLLER://controller3:19093'
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  broker1:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: broker1
+    container_name: broker1
+    depends_on:
+      - controller1
+      - controller2
+      - controller3
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'broker'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_LISTENERS: 'INTERNAL://broker1:19092,EXTERNAL://0.0.0.0:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://broker1:19092,EXTERNAL://localhost:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      KAFKA_NODE_ID: 11
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  broker2:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: broker2
+    container_name: broker2
+    depends_on:
+      - controller1
+      - controller2
+      - controller3
+    ports:
+      - "9292:9092"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'broker'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_LISTENERS: 'INTERNAL://broker2:19092,EXTERNAL://0.0.0.0:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://broker2:19092,EXTERNAL://localhost:9292'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      KAFKA_NODE_ID: 12
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  broker3:
+    image: confluentinc/cp-server:${CP_VERSION}
+    hostname: broker3
+    container_name: broker3
+    depends_on:
+      - controller1
+      - controller2
+      - controller3
+    ports:
+      - "9392:9092"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_PROCESS_ROLES: 'broker'
+      CLUSTER_ID: ${CLUSTER_ID}
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@controller1:19093,2@controller2:19093,3@controller3:19093'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT'
+      KAFKA_LISTENERS: 'INTERNAL://broker3:19092,EXTERNAL://0.0.0.0:9092'
+      KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://broker3:19092,EXTERNAL://localhost:9392'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'INTERNAL'
+      KAFKA_NODE_ID: 13
+      KAFKA_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      KAFKA_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 3
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 3
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 3
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:${CP_VERSION}
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - broker1
+      - broker2
+      - broker3
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: 'WARN'
+      SCHEMA_REGISTRY_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/confluent_schemaregistry.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  connect:
+#    image: confluentinc/cp-server-connect:${CP_VERSION}
+    image: confluentinc/cp-server-connect:7.7.2
+    hostname: connect
+    container_name: connect
+    depends_on:
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
+      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+      CONNECT_GROUP_ID: connect
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 3
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.storage.StringConverter
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONNECT_PLUGIN_PATH: "/usr/share/java,/usr/share/confluent-hub-components"
+      CONNECT_LOG4J_ROOT_LOGLEVEL: 'INFO'
+#      CONNECT_LOG4J_LOGGERS: 'io.confluent=INFO,org.apache.kafka=WARN,kafka=WARN'
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/kafka_connect.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:${CP_VERSION}
+    hostname: control-center
+    container_name: control-center
+    depends_on:
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+      - connect
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
+      CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect:8083'
+      CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
+      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      CONTROL_CENTER_REPLICATION_FACTOR: 3
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 3
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 3
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 3
+      PORT: 9021
+
+  rest-proxy:
+    image: confluentinc/cp-kafka-rest:${CP_VERSION}
+    hostname: rest-proxy
+    container_name: rest-proxy
+    depends_on:
+      - broker1
+      - broker2
+      - broker3
+      - schema-registry
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./../assets/exporter/:/usr/share/jmx-exporter/
+    environment:
+      KAFKA_REST_HOST_NAME: rest-proxy
+      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      KAFKAREST_OPTS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-1.1.0.jar=1234:/usr/share/jmx-exporter/confluent_rest.yml
+        -Djava.util.logging.config.file=/usr/share/jmx-exporter/exporter_debug_logging.properties
+
+  akhq:
+    image: tchiotludo/akhq:latest
+    hostname: akhq
+    container_name: akhq
+    ports:
+      - "8080:8080"
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "broker1:19092,broker2:19092,broker3:19092"
+              schema-registry:
+                url: "http://schema-registry:8081"
+              connect:
+                - name: "connect"
+                  url: "http://connect:8083"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./assets/prometheus/prometheus-config/:/etc/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - "GF_SECURITY_ADMIN_USER=admin"
+      - "GF_SECURITY_ADMIN_PASSWORD=password"
+      - "GF_USERS_ALLOW_SIGN_UP=false"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./../assets/grafana/provisioning/:/etc/grafana/provisioning

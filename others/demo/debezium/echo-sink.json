@@ -1,0 +1,14 @@
+{
+  "connector.class": "EchoSink",
+  "topics": "local.dkt-member.streaming.public.demo-debezium.member-event.v1.avro",
+  "transforms": "moveHeaderToPayload",
+  "transforms.moveHeaderToPayload.type": "com.decathlon.kafka.connect.transforms.headers.MoveHeaderToPayload",
+
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+
+  "value.converter": "com.decathlon.kafka.crypto.serdes.KafkaCryptoConverter",
+  "value.converter.crypto.serdes.delegate.converter": "io.confluent.connect.avro.AvroConverter",
+  "value.converter.crypto.serdes.tink.keyset.json.string": "##TINK_KEYSET_JSON##",
+  "value.converter.schema.registry.url": "http://schema-registry:8081",
+  "value.converter.auto.register.schemas": false
+}

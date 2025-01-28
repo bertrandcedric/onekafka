@@ -22,10 +22,14 @@
       ansible.builtin.apt:
         name: ansible
         state: present
-    - name: Install penjdk-21-jdk
+        update_cache: yes
+    - name: Install openjdk-21-jdk
       ansible.builtin.apt:
         name: openjdk-21-jdk
         state: present
+        update_cache: yes
     - name: Run script init
+      become: true
+      become_user: ubuntu
       ansible.builtin.shell: |
         ansible-galaxy collection install confluent.platform --force

@@ -1,0 +1,13 @@
+{
+  "connect.name": "io.debezium.connector.common.Heartbeat",
+  "connect.version": 1,
+  "fields": [
+    {
+      "name": "ts_ms",
+      "type": "long"
+    }
+  ],
+  "name": "Heartbeat",
+  "namespace": "io.debezium.connector.common",
+  "type": "record"
+}
