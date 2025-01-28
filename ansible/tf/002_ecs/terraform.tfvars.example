@@ -1,0 +1,44 @@
+region      = "<region>"
+ami_keyword = "ubuntu-24.04"
+prefix      = "<prefix"
+vpc_id      = "<vpc_id>"
+public_subnet_id = [
+  "<public_subnet_id_0>",
+  "<public_subnet_id_1>",
+  "<public_subnet_id_2>",
+]
+private_subnet_id = [
+  "<private_subnet_id_0>",
+  "<private_subnet_id_1>",
+  "<private_subnet_id_2>",
+]
+hosted_zone_id               = "<hosted_zone_id>"
+key_name                     = "<key_name>"
+internal_security_group_name = "<internal_security_group_name>"
+external_security_group_name = "<external_security_group_name>"
+tags = {
+  owner_name  = "<owner_name>"
+  owner_email = "<owner_email>"
+  environment = "dev"
+}
+
+deployment_type = "private"
+dns_suffix      = "<dns_suffix>"
+# Confluent Platform Stack
+zk_count         = 0
+controller_count = 3
+broker_count     = 3
+connect_count    = 1
+schema_count     = 1
+rest_count       = 0
+c3_count         = 1
+ksql_count       = 0
+
+zk_instance_type         = "t3a.large"
+controller_instance_type = "t3a.large"
+broker_instance_type     = "t3a.large"
+schema_instance_type     = "t3a.large"
+connect_instance_type    = "t3a.large"
+rest_instance_type       = "t3a.large"
+c3_instance_type         = "t3a.large"
+ksql_instance_type       = "t3a.large"

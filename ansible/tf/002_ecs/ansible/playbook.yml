@@ -1,0 +1,31 @@
+---
+- name: Update web servers
+  hosts: jumphost
+  remote_user: ubuntu
+
+  tasks:
+    - name: Copy hosts file
+      ansible.builtin.copy:
+        src: hosts.yml
+        dest: hosts.yml
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+    - name: Copy ansible.cfg file
+      ansible.builtin.copy:
+        src: .ansible.cfg
+        dest: .ansible.cfg
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+    - name: Install ansible
+      ansible.builtin.apt:
+        name: ansible
+        state: present
+    - name: Install penjdk-21-jdk
+      ansible.builtin.apt:
+        name: openjdk-21-jdk
+        state: present
+    - name: Run script init
+      ansible.builtin.shell: |
+        ansible-galaxy collection install confluent.platform --force

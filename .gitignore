@@ -1,0 +1,11 @@
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+.terraform/
+.tf_state/
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+/ansible/tf/002_ecs/ansible/hosts.json
+/ansible/tf/002_ecs/ansible/hosts_jumphost.yml
+/ansible/tf/002_ecs/ansible/hosts.yml
+*.pem

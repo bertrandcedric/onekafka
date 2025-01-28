@@ -1,0 +1,59 @@
+---
+all:
+  vars:
+    ansible_connection: ssh
+    ansible_user: ubuntu
+    ansible_become: true
+#    ansible_ssh_private_key_file: <<path-to-pem-file>>
+
+zookeeper:
+    hosts:
+%{ for addr in zookeepers ~}
+        ${addr}:
+%{ endfor ~}
+
+kafka_controller:
+    hosts:
+%{ for addr,az in zipmap(kafka_controllers, kafka_controller_azs) ~}
+        ${addr}:
+            kafka_controller_custom_properties:
+                broker.rack: ${az}
+%{ endfor ~}
+
+kafka_broker:
+    hosts:
+%{ for addr,az in zipmap(kafka_brokers, kafka_broker_azs) ~}
+        ${addr}:
+            kafka_broker_custom_properties:
+                broker.rack: ${az}
+%{ endfor ~}
+
+kafka_connect:
+    hosts:
+%{ for addr in kafka_connects ~}
+        ${addr}:
+%{ endfor ~}
+
+schema_registry:
+    hosts:
+%{ for addr in schema_registries ~}
+        ${addr}:
+%{ endfor ~}
+
+kafka_rest:
+    hosts:
+%{ for addr in kafka_rests ~}
+        ${addr}:
+%{ endfor ~}
+
+ksql:
+    hosts:
+%{ for addr in ksqls ~}
+        ${addr}:
+%{ endfor ~}
+
+control_center:
+    hosts:
+%{ for addr in control_centers ~}
+        ${addr}:
+%{ endfor ~}
