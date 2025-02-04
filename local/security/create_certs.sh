@@ -14,7 +14,7 @@ rm -f *.crt *.csr *_creds *.jks *.srl *.key *.pem *.der *.p12
 # Generate CA key
 openssl req -new -x509 -keyout snakeoil-ca-1.key -out snakeoil-ca-1.crt -days 365 -subj '/CN=ca1.test.confluent.io/OU=TEST/O=CONFLUENT/L=PaloAlto/S=Ca/C=US' -passin pass:confluent -passout pass:confluent
 
-for i in controller1 controller2 controller2 broker1 broker2 broker3 schema-registry connect control-center rest-proxy client akhq
+for i in controller1 controller2 controller3 broker1 broker2 broker3 schema-registry connect control-center rest-proxy client akhq
 do
 	echo "------------------------------- $i -------------------------------"
 

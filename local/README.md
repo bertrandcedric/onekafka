@@ -46,3 +46,8 @@ $ docker run -it --network host \
       --producer-props bootstrap.servers=localhost:9092 \
       --topic sample.v1.avro --num-records 1000 --throughput 5 --record-size 10240
 ```
+
+Create connector
+```shell
+curl localhost:8083/connectors
+```
