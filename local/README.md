@@ -51,3 +51,8 @@ Create connector
 ```shell
 curl localhost:8083/connectors
 ```
+
+Embedded rest proxy (by default a rest proxy is exposed by the broker on the 8090 port)
+```shell
+curl -s http://localhost:8090/kafka/v3/clusters
+```

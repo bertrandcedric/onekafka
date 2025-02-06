@@ -376,62 +376,6 @@ services:
         password="alice-secret";
 #      CONNECT_SSL_CLIENT_AUTH: 'required'
 
-##  control-center:
-##    image: confluentinc/cp-enterprise-control-center:${CP_VERSION}
-##    hostname: control-center
-##    container_name: control-center
-##    depends_on:
-##      - broker1
-##      - broker2
-##      - broker3
-##      - schema-registry
-##      - connect
-##    ports:
-##      - "9021:9021"
-##    volumes:
-##      - ./../certificates:/certificates/
-##    environment:
-##      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
-##      CONTROL_CENTER_CONNECT_CONNECT-DEFAULT_CLUSTER: 'connect:8083'
-##      CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
-##      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "https://schema-registry:8081"
-##      CONTROL_CENTER_SCHEMA_REGISTRY_SCHEMA_REGISTRY_SSL_TRUSTSTORE_LOCATION: /certificates/kafka.schema-registry.truststore.jks
-##      CONTROL_CENTER_SCHEMA_REGISTRY_SCHEMA_REGISTRY_SSL_TRUSTSTORE_PASSWORD: confluent
-##      CONTROL_CENTER_REPLICATION_FACTOR: 3
-##      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 3
-##      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 3
-##      CONFLUENT_METRICS_TOPIC_REPLICATION: 3
-##      PORT: 9021
-##      # SSL SECURITY
-##      CONTROL_CENTER_STREAMS_SECURITY_PROTOCOL: SSL
-##      CONTROL_CENTER_STREAMS_SSL_TRUSTSTORE_LOCATION: /certificates/kafka.control-center.truststore.jks
-##      CONTROL_CENTER_STREAMS_SSL_TRUSTSTORE_PASSWORD: confluent
-##
-##  rest-proxy:
-##    image: confluentinc/cp-kafka-rest:${CP_VERSION}
-##    hostname: rest-proxy
-##    container_name: rest-proxy
-##    depends_on:
-##      - broker1
-##      - broker2
-##      - broker3
-##      - schema-registry
-##    ports:
-##      - "8082:8082"
-##    volumes:
-##      - ./../certificates:/certificates/
-##    environment:
-##      KAFKA_REST_HOST_NAME: rest-proxy
-##      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker1:19092,broker2:19092,broker3:19092'
-##      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-##      KAFKA_REST_SCHEMA_REGISTRY_URL: 'https://schema-registry:8081'
-##      KAFKA_REST_SCHEMA_REGISTRY_SSL_TRUSTSTORE_LOCATION: /certificates/kafka.schema-registry.truststore.jks
-##      KAFKA_REST_SCHEMA_REGISTRY_SSL_TRUSTSTORE_PASSWORD: confluent
-##      # SSL SECURITY
-##      KAFKA_REST_CLIENT_SECURITY_PROTOCOL: SSL
-##      KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION: /certificates/kafka.rest-proxy.truststore.jks
-##      KAFKA_REST_CLIENT_SSL_TRUSTSTORE_PASSWORD: confluent
-
   akhq:
     image: tchiotludo/akhq:latest
     hostname: akhq
