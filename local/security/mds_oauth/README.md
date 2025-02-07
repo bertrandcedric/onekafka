@@ -44,17 +44,7 @@ curl -X POST "http://broker1:8091/kafka/v3/clusters/MkU3OEVBNTcwNTJENDM2Qk/topic
 {
     "topic_name": "topic-X",
     "partitions_count": 1,
-    "replication_factor": 1,
-    "configs": [
-        {
-            "name": "cleanup.policy",
-            "value": "compact"
-        },
-        {
-            "name": "compression.type",
-            "value": "gzip"
-        }
-    ]
+    "replication_factor": 1
 }'
 
 curl -X GET "http://broker1:8091/security/1.0/authenticate" -H "accept: application/json" -H "Authorization: Bearer $TOKEN" | jq .
